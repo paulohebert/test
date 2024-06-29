@@ -29,5 +29,4 @@ jobs:
       - name: Setup Xmake
         uses: xmake-io/github-action-setup-xmake@v1
         with:
-          xmake-version: "2.9.3"
-          actions-cache-folder: ".xmake-cache"
+          xmake-version: '2.5.3'
