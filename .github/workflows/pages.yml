@@ -4,19 +4,12 @@ on:
   push:
     branches: ["main"]
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-
 jobs:
-  # Build job
-  build:
+  publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
     container: emscripten/emsdk:3.1.61
     steps:
       - name: Checkout
@@ -25,22 +18,16 @@ jobs:
       - name: Build with Emscripten
         run: emmake make
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
+      - name: Copy
+        run: cp public/_headers build/_headers
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Publish to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
         with:
-          path: ./build
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.ACCOUNT_ID }}
+          projectName: test
+          directory: build
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          wranglerVersion: '3'
 
-  # Deployment job
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
