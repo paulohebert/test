@@ -1,0 +1,13 @@
+{
+    "configurations": [
+        {
+            "name": "xmake",
+            "compileCommands": ".vscode/compile_commands.json",
+            "includePath": [
+                "${default}",
+                "C:/Users/guede/AppData/Local/.xmake/packages/f/freeglut/v3.4.0/9e1e9a63d6b948868b158c0a7189e4ed/include"
+            ]
+        }
+    ],
+    "version": 4
+}

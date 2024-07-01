@@ -17,16 +17,30 @@ jobs:
   # Build job
   build:
     runs-on: ubuntu-latest
+    container: emscripten/emsdk:3.1.61
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - uses: mymindstorm/setup-emsdk@v14
+      - name: Build with Emscripten
+        run: emmake make
 
-      - name: Verify
-        run: emcc -v
-      
-      - name: Setup Xmake
-        uses: xmake-io/github-action-setup-xmake@v1
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          xmake-version: '2.7.7'
+          path: ./build
+
+  # Deployment job
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
