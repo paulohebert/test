@@ -1,7 +1,6 @@
 ### xmake ###
 # Xmake cache
 .xmake/
-build/
 bin/
 
 ### VSCode ###
