@@ -21,6 +21,12 @@ jobs:
       - name: Copy
         run: cp public/_headers build/_headers
 
+      - name: Print all environment variables
+        run: env
+
+      - name: Print secret environment variables
+        run: env | grep SECRET
+
       - name: Publish to Cloudflare Pages
         uses: cloudflare/pages-action@v1
         with:
